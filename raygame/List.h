@@ -39,5 +39,6 @@ T List<T>::back()
 template<typename T>
 bool List<T>::isEmptyList()
 {
-	return false;
+	if (m_first == nullptr) return true;
+	else return false;
 }

@@ -28,7 +28,8 @@ void UnorderedList<T>::insertFirst(const T & tempInfo)
 		return;
 	}
 
-	newNode->next = this->m_first;
+	newNode->nextNode = this->m_first;
+	this->m_first->previousNode = newNode;
 	this->m_first = newNode;
 	this->mCount++;
 }
@@ -48,7 +49,8 @@ void UnorderedList<T>::insertLast(const T & tempInfo)
 		return;
 	}
 
-	newNode->next = this->m_last;
+	this->m_last->nextNode = this->m_last;
+	newNode->previousNode = this->m_last;
 	this->m_last = newNode;
 	this->mCount++;
 

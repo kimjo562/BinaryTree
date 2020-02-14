@@ -8,7 +8,8 @@ class Node
 
 public:
 	T info;
-	Node<T>* next;
+	Node<T>* nextNode;
+	Node<T>* previousNode;
 
 protected:
 
