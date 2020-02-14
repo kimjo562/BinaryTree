@@ -10,6 +10,7 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "UnorderedList.h"
 
 int main()
 {
@@ -22,6 +23,15 @@ int main()
 
 	SetTargetFPS(60);
 	//--------------------------------------------------------------------------------------
+
+	UnorderedList<int> UList;
+	UList.insertFirst(10);
+	UList.insertFirst(13);
+	UList.insertFirst(21);
+
+	UList.insertLast(40);
+	UList.insertLast(56);
+	return 0;
 
 	// Main game loop
 	while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -38,7 +48,7 @@ int main()
 		ClearBackground(BLACK);
 
 		DrawText("Skadi, Wheres Kaldr?", 440, 480, 35, WHITE);
-		DrawText("            (-.-)", 440, 580, 35, WHITE);
+		DrawText("          (-.-)", 440, 580, 35, WHITE);
 
 		EndDrawing();
 		//----------------------------------------------------------------------------------
