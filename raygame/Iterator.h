@@ -1,59 +1,64 @@
 // Iterators provide a way to access the elements of a collection without exposing its underlying representation.
-#include "Node.h"
 #pragma once
+#include "Node.h"
 
-template <typename T>
+template<typename T>
+class Iterator {
+private:
+	Node<T>* currentNode;
 
-class Iterator
-{
 public:
-
-
-	Iterator operator++();
-	Iterator operator--();
+	Iterator<T> operator++(int);
+	Iterator<T> operator--(int);
 
 	T operator*();
 
- 	Iterator();
+	Iterator();
+	~Iterator();
 	Iterator(Node<T>* ptr);
 
-	bool operator == (const Iterator<T>&)const;
-	bool operator != (const Iterator<T>&)const;
-
-private:
-
-	Node* currentNode;
-
+	bool operator==(const Iterator<T>&)const;
+	bool operator!=(const Iterator<T>&)const;
 };
 
 template<typename T>
-Iterator<T> Iterator<T>::operator++()
+Iterator<T> Iterator<T>::operator++(int)
 {
-	// Increment iterator position
-	if (currentNode->nextNode != nullptr) currentNode = currentNode->nextNode;
-	return this;
+	if (currentNode->next != nullptr)
+	{
+		currentNode = currentNode->next;
+		return *this;
+	}
+	return nullptr;
 }
 
 template<typename T>
-Iterator<T> Iterator<T>::operator--()
+Iterator<T> Iterator<T>::operator--(int)
 {
-	// Decrease iterator position
-	if (currentNode->previousNode != nullptr) currentNode = currentNode->previousNode;
-	return this;
+	if (currentNode->previous != nullptr)
+	{
+		currentNode = currentNode->previous;
+		return *this;
+	}
+	return nullptr;
 }
 
 template<typename T>
 T Iterator<T>::operator*()
 {
-	// Dereference iterator
-	T = currentNode->info;
-	return T();
+	return currentNode->info;
 }
 
 template<typename T>
 Iterator<T>::Iterator()
 {
 	currentNode = nullptr;
+}
+
+template<typename T>
+inline Iterator<T>::~Iterator()
+{
+
 }
 
 template<typename T>
@@ -65,27 +70,13 @@ Iterator<T>::Iterator(Node<T>* ptr)
 template<typename T>
 bool Iterator<T>::operator==(const Iterator<T>& currentIterator) const
 {
-	if (currentNode.info == currentIterator.currentNode->info)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
+	if (currentNode != nullptr && currentIterator.currentNode != nullptr && &currentNode->info == &currentIterator.currentNode->info) return true;
+	else return false;
 }
 
 template<typename T>
 bool Iterator<T>::operator!=(const Iterator<T>& currentIterator) const
 {
-	if (currentNode.info != currentIterator)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
+	if (currentNode != nullptr && currentIterator.currentNode != nullptr && &currentNode->info != &currentIterator.currentNode->info) return true;
+	else return false;
 }

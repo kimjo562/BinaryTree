@@ -32,6 +32,8 @@ int main()
 	UList.insertLast(40);
 	UList.insertLast(56);
 	UList.insertLast(68);
+
+	UList.search(2);
 	return 0;
 
 	// Main game loop
