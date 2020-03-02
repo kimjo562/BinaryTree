@@ -10,31 +10,21 @@
 ********************************************************************************************/
 
 #include "raylib.h"
-#include "UnorderedList.h"
+#include "TreeNode.h"
 
 int main()
 {
 	// Initialization
 	//--------------------------------------------------------------------------------------
-	int screenWidth = 1278;
-	int screenHeight = 960;
+	int screenWidth = 1080;
+	int screenHeight = 720;
 
 	InitWindow(screenWidth, screenHeight, "Zatamari");
 
 	SetTargetFPS(60);
+
 	//--------------------------------------------------------------------------------------
-
-	UnorderedList<int> UList;
-	UList.insertFirst(10);
-	UList.insertFirst(13);
-	UList.insertFirst(21);
-
-	UList.insertLast(40);
-	UList.insertLast(56);
-	UList.insertLast(68);
-
-	UList.search(2);
-	return 0;
+	TreeNode node(7);
 
 	// Main game loop
 	while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -50,8 +40,9 @@ int main()
 
 		ClearBackground(BLACK);
 
-		DrawText("Skadi, Wheres Kaldr?", 440, 480, 35, WHITE);
-		DrawText("          (-.-)", 440, 580, 35, WHITE);
+		//DrawText("Skadi, Wheres Kaldr?", 440, 480, 35, WHITE);
+		//DrawText("          (-.-)", 440, 580, 35, WHITE);
+		node.draw(200, 200, true);
 
 		EndDrawing();
 		//----------------------------------------------------------------------------------
