@@ -1,6 +1,5 @@
 #include "BinaryTree.h"
-
-
+#include "TreeNode.h"
 
 BinaryTree::BinaryTree()
 {
@@ -13,22 +12,50 @@ BinaryTree::~BinaryTree()
 
 bool BinaryTree::isEmpty() const
 {
+	if (m_pRoot == nullptr)
+	{
+		return true;
+	}
 	// return true if root is null
 	return false;
 }
 
+
 void BinaryTree::insert(int a_nValue)
 {
-	// If the tree is empty, the value inserted at the root
 	// Set the current node to root
+	TreeNode* currentNode = m_pRoot;
+	TreeNode* previousNode;
+
+	// If the tree is empty, the value inserted at the root
+	if (isEmpty)
+	{
+		currentNode->getData() = a_nValue;
+	}
+
 	// While the current node is not null
-	// If the value to be inserted is less than the value in the current node
-		// Set the current node to the left child and continue
-	// If the balue to be inserted is greater than the current node
-		// Set the current node to the right child and continue
-	// If the balue to be inserted is the same as the value in the current node
-		// The value is already in the tree, so exit
-	// end While
+	while (currentNode != nullptr)
+	{
+		// If the value to be inserted is less than the value in the current node
+			if (a_nValue < currentNode)
+			{
+				// Set the current node to the left child and continue
+				currentNode->setLeft(currentNode);
+
+			}
+			// If the value to be inserted is greater than the current node
+			else if (a_nValue > currentNode)
+			{
+				// Set the current node to the right child and continue
+
+			}
+			// If the value to be inserted is the same as the value in the current node
+			else if (a_nValue == currentNode)
+			{
+				// The value is already in the tree, so exit
+			}
+	}																																						// end While
+
 
 	// Get the parent of the current node (before it was set to null)
 	// If the value to be inserted is less than parent
