@@ -11,20 +11,32 @@
 
 #include "raylib.h"
 #include "TreeNode.h"
+#include "BinaryTree.h"
 
 int main()
 {
 	// Initialization
 	//--------------------------------------------------------------------------------------
-	int screenWidth = 1080;
-	int screenHeight = 720;
+	int screenWidth = 1600;
+	int screenHeight = 900;
 
 	InitWindow(screenWidth, screenHeight, "Zatamari");
 
 	SetTargetFPS(60);
 
 	//--------------------------------------------------------------------------------------
-	TreeNode node(7);
+	BinaryTree tree;
+	tree.insert(15);
+	tree.insert(5);
+	tree.insert(10);
+	tree.insert(17);
+	tree.insert(21);
+	tree.insert(7);
+	tree.insert(12);
+	tree.insert(14);
+	tree.insert(17);
+	tree.insert(5);
+
 
 	// Main game loop
 	while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -42,7 +54,8 @@ int main()
 
 		//DrawText("Skadi, Wheres Kaldr?", 440, 480, 35, WHITE);
 		//DrawText("          (-.-)", 440, 580, 35, WHITE);
-		node.draw(200, 200, true);
+
+		tree.draw();
 
 		EndDrawing();
 		//----------------------------------------------------------------------------------

@@ -13,10 +13,10 @@ BinaryTree::~BinaryTree()
 bool BinaryTree::isEmpty() const
 {
 	if (m_pRoot == nullptr)
-	{
+	{	
+		// return true if root is null
 		return true;
 	}
-	// return true if root is null
 	return false;
 }
 
@@ -27,53 +27,60 @@ void BinaryTree::insert(int a_nValue)
 	// If the tree is empty, the value inserted at the root
 	if (isEmpty())
 	{
-		TreeNode * newNode = new TreeNode(0);
+		TreeNode * newNode = new TreeNode(a_nValue);
 		m_pRoot = newNode;
-		m_pRoot->setData(a_nValue);
+		return;
 	}
-
-	bool inserting = true;
 
 	//Create a pointer.
 	TreeNode* node;
 	node = m_pRoot;
 
+	bool insert = true;
+
 	// While the current node is not null
-	while (inserting)
+	while (insert)
 	{
 		// If the value to be inserted is less than the value in the current node
-		if (node->getData() > a_nValue)
+		if (a_nValue < node->getData())
 		{
-			// Set the current node to the left child and continue
 			if (node->getLeft() != nullptr)
 			{
 				node = node->getLeft();
 			}
 			else
 			{
+				// Set the current node to the left child and continue
 				TreeNode* newNode = new TreeNode(a_nValue);
 				node->setLeft(newNode);
-				inserting = false;
+				insert = false;
 			}
 		}
-
 		// If the value to be inserted is greater than the current node
-		else if (node->getData() <= a_nValue)
+		else if (a_nValue > node->getData())
 		{
-			// Set the current node to the right child and continue
 			if (node->getRight() != nullptr)
 			{
 				node = node->getRight();
 			}
-			// If the value to be inserted is the same as the value in the current node
 			else
 			{
+				// Set the current node to the right child and continue
 				TreeNode* newNode = new TreeNode(a_nValue);
 				node->setRight(newNode);
-				inserting = false;
+				insert = false;
 			}
+
 		}
+		// If the value to be inserted is the same as the value in the current node
+		else if (node->getData() == a_nValue)
+		{
+			// do nothing
+			insert = false;
+		}
+
 	}
+	
 }
 
 void BinaryTree::remove(int a_nValue)
@@ -106,11 +113,11 @@ void BinaryTree::remove(int a_nValue)
 	{
 		if (node->hasLeft())    // Set this left child of the parent to the right child of the minimum node
 		{
-			node->getLeft = node->setRight; // Dbl check (Note to self)
+
 		}
 		if (node->hasRight()) 	// Set the right child of the parent to the minimum node’s right child
 		{
-			node->getData = node->setRight; // Dbl check (Note to self)
+
 		}
 
 		//delete node
@@ -169,34 +176,34 @@ TreeNode * BinaryTree::find(int a_nValue)
 void BinaryTree::draw(TreeNode * selected)
 {
 	// Draw the root node
-	draw(m_pRoot, 640, 680, 640, selected);
+	draw(m_pRoot, 640, 200, 640, selected);
 }
 
 bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode ** ppOutParent)
 {
 	// Set the current node to the root
 	TreeNode * currentNode = new TreeNode(0);
-	m_pRoot = currentNode;
+	m_pRoot = currentNode; // This now Parent Node
 
 	//	While the current node is not null
 	while (currentNode != nullptr)
 	{
 		//	if the search value equals the current node value,
-		if (a_nSearchValue == currentNode)
+		if (a_nSearchValue == currentNode->getData())
 		{
-			//		return the current node and its parent
+			//	return the current node and its parent
 			return currentNode;
 		}
 		//	Otherwise, If the search value is less than the current node
-		else if (a_nSearchValue < currentNode)
+		else if (a_nSearchValue < currentNode->getData())
 		{
-			//		set the current node to the left child
-			currentNode = currentNode->setLeft;
+			//	set the current node to the left child
+			currentNode = currentNode->getLeft();
 		}
 		else
 		{
 			//	otherwise set the current node to the right child
-			currentNode = currentNode->setRight;
+			currentNode = currentNode->getRight();
 		}
 
 	}	// end While
@@ -216,17 +223,17 @@ void BinaryTree::draw(TreeNode * pNode, int x, int y, int horizontalSpacing, Tre
 		if (pNode->hasLeft())
 		{
 			// Draw a line to the left node
-			DrawLine(x, y, x - horizontalSpacing, y - 80, RED);
+			DrawLine(x, y, x - horizontalSpacing, y + 80, RED);
 			// Draw the left node
-			draw(pNode->getLeft(), x - horizontalSpacing, y - 80, horizontalSpacing, selected);
+			draw(pNode->getLeft(), x - horizontalSpacing, y + 80, horizontalSpacing, selected);
 		}
 		// Check for a right node
 		if (pNode->hasRight())
 		{
 			// Draw a line to the right node
-			DrawLine(x, y, x + horizontalSpacing, y - 80, RED);
+			DrawLine(x, y, x + horizontalSpacing, y + 80, RED);
 			// Draw the right node
-			draw(pNode->getRight(), x + horizontalSpacing, y - 80, horizontalSpacing, selected);
+			draw(pNode->getRight(), x + horizontalSpacing, y + 80, horizontalSpacing, selected);
 		}
 		pNode->draw(x, y, (selected == pNode));
 	}
