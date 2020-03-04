@@ -78,12 +78,12 @@ void BinaryTree::insert(int a_nValue)
 
 void BinaryTree::remove(int a_nValue)
 {
-	TreeNode * node = find(a_nValue);
+	TreeNode* node = find(a_nValue);
 	// If the current node has a right branch, then
 	if (node->hasLeft() && node->hasRight())
 	{
 		//Swap with equal value to the right
-		TreeNode * tempNode = node->getRight();
+		TreeNode* tempNode = node->getRight();
 
 		bool searching = true;
 		while (searching)
@@ -106,11 +106,11 @@ void BinaryTree::remove(int a_nValue)
 	{
 		if (node->hasLeft())    // Set this left child of the parent to the right child of the minimum node
 		{
-
+			node->getLeft = node->setRight; // Dbl check (Note to self)
 		}
 		if (node->hasRight()) 	// Set the right child of the parent to the minimum node’s right child
 		{
-
+			node->getData = node->setRight; // Dbl check (Note to self)
 		}
 
 		//delete node
@@ -118,8 +118,9 @@ void BinaryTree::remove(int a_nValue)
 		delete node;
 	}
 
-	//Delete the node and ptr.
-	else {
+	//Delete the node and pointer.
+	else 
+	{
 		node = nullptr;
 		delete node;
 	}
@@ -174,15 +175,33 @@ void BinaryTree::draw(TreeNode * selected)
 bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode ** ppOutParent)
 {
 	// Set the current node to the root
+	TreeNode * currentNode = new TreeNode(0);
+	m_pRoot = currentNode;
+
 	//	While the current node is not null
-	//	if the search value equals the current node value,
-	//		return the current node and its parent
-	//	otherwise
-	//		If the search value is less than the current node
-	//		set the current node to the left child
-	//	otherwise set the current node to the right child
-	// end While
-	// If the loop exits, then a match was not found, so return false
+	while (currentNode != nullptr)
+	{
+		//	if the search value equals the current node value,
+		if (a_nSearchValue == currentNode)
+		{
+			//		return the current node and its parent
+			return currentNode;
+		}
+		//	Otherwise, If the search value is less than the current node
+		else if (a_nSearchValue < currentNode)
+		{
+			//		set the current node to the left child
+			currentNode = currentNode->setLeft;
+		}
+		else
+		{
+			//	otherwise set the current node to the right child
+			currentNode = currentNode->setRight;
+		}
+
+	}	// end While
+
+	// If the loop exits, then a match was not found, so return false
 	return false;
 }
 
