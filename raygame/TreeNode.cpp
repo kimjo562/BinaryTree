@@ -20,7 +20,7 @@ void TreeNode::draw(int x, int y, bool selected)
 
 	if (selected)
 	{
-		DrawCircle(x, y, 28, DARKBLUE);
+		DrawCircle(x, y, 28, ORANGE);
 	}
 	else
 	{

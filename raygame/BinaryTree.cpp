@@ -85,51 +85,64 @@ void BinaryTree::insert(int a_nValue)
 
 void BinaryTree::remove(int a_nValue)
 {
-	TreeNode* node = find(a_nValue);
+	TreeNode* currentNode = find(a_nValue);
+
 	// If the current node has a right branch, then
-	if (node->hasLeft() && node->hasRight())
+	if (currentNode->hasLeft() && currentNode->hasRight())
 	{
 		//Swap with equal value to the right
-		TreeNode* tempNode = node->getRight();
+		TreeNode* tempNode = currentNode->getRight();
 
 		bool searching = true;
 		while (searching)
 		{
-			// Find the minimum value in the right branch by iterating down the left branch of the
+			// Find the minimum value in the right branch by iterating down the left branch of the 
+			// current node’s right child until there are no more left branch nodes 
 			if (tempNode->getLeft() != nullptr)
 			{
+				parentNode = tempNode;
 				tempNode = tempNode->getLeft();
 			}
 			// If you are deleting the parent’s left node 
 			else if (tempNode->getLeft() == nullptr)
 			{
-				node->setData(tempNode->getData());
+				currentNode->setData(tempNode->getData());
 				tempNode = nullptr;
+				parentNode = nullptr;
 				delete tempNode;
+				delete parentNode;
 			}
+
 		}
 	}
-	else if (node->hasLeft() || node->hasRight())
+	else if (currentNode->hasLeft() || currentNode->hasRight()) 
 	{
-		if (node->hasLeft())    // Set this left child of the parent to the right child of the minimum node
-		{
+		// 5, 
 
+		if (currentNode->hasLeft())   
+		{		
+			parentNode->setLeft(currentNode->getLeft());
 		}
-		if (node->hasRight()) 	// Set the right child of the parent to the minimum node’s right child
+		if (currentNode->hasRight()) 	
 		{
-
+			 parentNode->setLeft(currentNode->getRight());
 		}
 
-		//delete node
-		node = nullptr;
-		delete node;
-	}
+		// ----------------------------------------------------
+		// 12,17,
+		
+		//if (node->hasLeft())
+		//{
+		//	parentNode->setLeft(node->getRight());
+		//}
+		//if (node->hasRight()) 	
+		//{
+		//	parentNode->setRight(node->getRight());
+		//}
 
-	//Delete the node and pointer.
-	else 
-	{
-		node = nullptr;
-		delete node;
+		delete currentNode;
+		currentNode = nullptr;
+		delete currentNode;
 	}
 }
 
@@ -146,7 +159,7 @@ TreeNode * BinaryTree::find(int a_nValue)
 	//Create a pointer.
 	TreeNode* node;
 	node = m_pRoot;
-	while (!found) {
+	while (node != nullptr) {
 
 		if (node->getData() == a_nValue)
 		{
@@ -154,21 +167,18 @@ TreeNode * BinaryTree::find(int a_nValue)
 			return node;
 		}
 		// If its greater go right
-		else if (node->getData() > a_nValue)
+		else if (a_nValue > node->getData())
 		{
+			parentNode = node;
 			node = node->getRight();
 		}
 		// Otherwise go left
-		else
+		else if (a_nValue < node->getData())
 		{
+			parentNode = node;
 			node = node->getLeft();
 		}
 
-		// No infinite
-		if (node->getLeft() == nullptr && node->getRight() == nullptr)
-		{
-			return nullptr;
-		}
 	}
 	return nullptr;
 }
