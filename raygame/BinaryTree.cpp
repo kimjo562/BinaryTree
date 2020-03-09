@@ -85,64 +85,100 @@ void BinaryTree::insert(int a_nValue)
 
 void BinaryTree::remove(int a_nValue)
 {
-	TreeNode* currentNode = find(a_nValue);
+	// Create a pointer
+	TreeNode* parentNode;
+	TreeNode* currentNode;
 
-	// If the current node has a right branch, then
-	if (currentNode->hasLeft() && currentNode->hasRight())
+	if (findNode(a_nValue, &currentNode, &parentNode) == true)
 	{
-		//Swap with equal value to the right
-		TreeNode* tempNode = currentNode->getRight();
-
-		bool searching = true;
-		while (searching)
+		// If the current node has a right branch
+		if (currentNode->hasRight())
 		{
-			// Find the minimum value in the right branch by iterating down the left branch of the 
-			// current node’s right child until there are no more left branch nodes 
-			if (tempNode->getLeft() != nullptr)
+			TreeNode* iterNode = currentNode->getRight();
+			TreeNode* iterParent = currentNode;
+
+			// Check if Iter's Left isn't null
+			while (iterNode->getLeft() != nullptr)
 			{
-				parentNode = tempNode;
-				tempNode = tempNode->getLeft();
-			}
-			// If you are deleting the parent’s left node 
-			else if (tempNode->getLeft() == nullptr)
-			{
-				currentNode->setData(tempNode->getData());
-				tempNode = nullptr;
-				parentNode = nullptr;
-				delete tempNode;
-				delete parentNode;
+				iterParent = iterNode;
+				iterNode = iterNode->getLeft();
 			}
 
+			// Copy the iter's data to the current node;
+			currentNode->setData(iterNode->getData());
+
+			// If you are deleting the parent’s left node
+			if (iterNode == iterParent->getLeft())
+			{
+				// Set this left child of the parent to the right child of the minimum node
+				if (iterNode->hasRight())
+				{
+					iterParent->setRight(iterNode->getRight());
+					delete iterNode;
+				}
+				else
+				{
+					delete iterNode;
+					iterNode->setLeft(nullptr);
+				}
+			}
+			else if (iterNode == iterParent->getRight())
+			{
+				// Set the right child of the parent to the minimum node’s right child
+				if (iterNode->hasRight())
+				{
+					iterParent->setRight(iterNode->getRight());
+					delete iterNode;
+				}
+				else
+				{
+					delete iterNode;
+					iterParent->setRight(nullptr);
+				}
+			}
 		}
 	}
-	else if (currentNode->hasLeft() || currentNode->hasRight()) 
+	// If the current node has no right branch  
+	else
 	{
-		// 5, 
-
-		if (currentNode->hasLeft())   
-		{		
-			parentNode->setLeft(currentNode->getLeft());
-		}
-		if (currentNode->hasRight()) 	
+		// If we are deleting the parent node's left
+		if (currentNode == parentNode->getLeft())
 		{
-			 parentNode->setLeft(currentNode->getRight());
+			// Set the left child of the parent to the left child of the current node
+			if (currentNode->hasLeft())
+			{
+				parentNode->setLeft(currentNode->getLeft());
+				delete currentNode;
+			}
+			else
+			{
+				delete currentNode;
+				parentNode->setLeft(nullptr);
+			}
 		}
-
-		// ----------------------------------------------------
-		// 12,17,
-		
-		//if (node->hasLeft())
-		//{
-		//	parentNode->setLeft(node->getRight());
-		//}
-		//if (node->hasRight()) 	
-		//{
-		//	parentNode->setRight(node->getRight());
-		//}
-
-		delete currentNode;
-		currentNode = nullptr;
-		delete currentNode;
+		// If we are deleting the parent node's right
+		else if (currentNode == parentNode->getRight())
+		{
+			// Set the right child of the parent to the left child of the current node
+			if (currentNode->hasLeft())
+			{
+				parentNode->setRight(currentNode->getLeft());
+				delete currentNode;
+			}
+			else
+			{
+				delete currentNode;
+				parentNode->setRight(nullptr);
+			}
+		}
+		// If we are deleting the root
+		else if (currentNode == m_pRoot)
+		{
+			// The root becomes the left child of the current node 
+			m_pRoot = currentNode->getLeft();
+			m_pRoot->setLeft(currentNode->getLeft()->getLeft());
+			delete currentNode->getLeft();
+		}
 	}
 }
 
@@ -191,34 +227,36 @@ void BinaryTree::draw(TreeNode * selected)
 
 bool BinaryTree::findNode(int a_nSearchValue, TreeNode ** ppOutNode, TreeNode ** ppOutParent)
 {
-	// Set the current node to the root
-	TreeNode * currentNode = new TreeNode(0);
-	m_pRoot = currentNode; // This now Parent Node
+	TreeNode* currentNode = m_pRoot;
+	TreeNode* parentNode = currentNode;
 
-	//	While the current node is not null
+	// While the current node is not null
 	while (currentNode != nullptr)
 	{
-		//	if the search value equals the current node value,
+		// If the search value equals the current node
 		if (a_nSearchValue == currentNode->getData())
 		{
-			//	return the current node and its parent
-			return currentNode;
+			// Set the current node to the parent node
+			*ppOutNode = currentNode;
+			*ppOutParent = currentNode;
+			return true;
 		}
-		//	Otherwise, If the search value is less than the current node
 		else if (a_nSearchValue < currentNode->getData())
 		{
-			//	set the current node to the left child
+			// Set the parent node to current node
+			parentNode = currentNode;
+			// Set the current node to the left
 			currentNode = currentNode->getLeft();
 		}
-		else
+		else if (a_nSearchValue > currentNode->getData())
 		{
-			//	otherwise set the current node to the right child
+			// Set the parent node to current node
+			parentNode = currentNode;
+			// Set the current node to the right
 			currentNode = currentNode->getRight();
 		}
+	}
 
-	}	// end While
-
-	// If the loop exits, then a match was not found, so return false
 	return false;
 }
 
