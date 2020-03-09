@@ -38,7 +38,7 @@ int main()
 	tree.insert(14);
 	//selected = tree.find(17);
 
-	tree.remove(14);
+	tree.remove(7);
 
 	// Main game loop
 	while (!WindowShouldClose())    // Detect window close button or ESC key
