@@ -6,6 +6,10 @@ TreeNode::TreeNode(int value)
 	m_value = value;
 }
 
+TreeNode::TreeNode()
+{
+}
+
 TreeNode::~TreeNode()
 {
 }

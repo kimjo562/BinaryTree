@@ -119,7 +119,7 @@ void BinaryTree::remove(int a_nValue)
 				else
 				{
 					delete iterNode;
-					iterNode->setLeft(nullptr);
+					iterParent->setLeft(nullptr);
 				}
 			}
 			else if (iterNode == iterParent->getRight())
@@ -179,6 +179,14 @@ void BinaryTree::remove(int a_nValue)
 			m_pRoot->setLeft(currentNode->getLeft()->getLeft());
 			delete currentNode->getLeft();
 		}
+	}
+
+	if (!currentNode->hasLeft() && !currentNode->hasRight())
+	{
+		parentNode = nullptr;
+		currentNode = nullptr;
+		delete currentNode;
+		delete parentNode;
 	}
 }
 

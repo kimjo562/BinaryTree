@@ -4,6 +4,7 @@ class TreeNode
 {
 public:
 	TreeNode(int value);
+	TreeNode();
 	~TreeNode();
 
 	bool hasLeft() { return (m_left != nullptr); }
